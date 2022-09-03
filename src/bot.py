@@ -1,15 +1,13 @@
-import os
-import configparser
 import logging
 from datetime import datetime
 
 import tweepy
 from gspread.exceptions import WorksheetNotFound
 
-from src.twitter import get_api as get_twitter_api
-from src.twitter import get_users_from_user_ids
-from src.gs import get_client as get_gs_client
-from src.config import Config
+from src.utils.twitter import get_api as get_twitter_api
+from src.utils.twitter import get_users_from_user_ids
+from src.utils.gs import get_client as get_gs_client
+from src.config import config
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -37,11 +35,7 @@ def process_account(spreadsheet, twitter_api, account):
         account_sheet.insert_rows(friends_rows, row=2)
 
 
-if __name__ == '__main__':
-    config_parser = configparser.ConfigParser()
-    config_parser.read(os.getenv('CONFIG_FILE'))
-    config = Config(config_parser=config_parser)
-
+def process_accounts():
     gs_client = get_gs_client(config.GS_CREDS_FILE)
     twitter_api = get_twitter_api(config.TWITTER_API_KEY, config.TWITTER_API_SECRET, config.TWITTER_ACCESS_TOKEN, config.TWITTER_ACCESS_TOKEN_SECRET)
 
