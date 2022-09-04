@@ -2,7 +2,7 @@ import os
 import configparser
 
 config_parser = configparser.ConfigParser()
-config_parser.read('./config/local.ini')
+config_parser.read('./config/config.ini')
 
 class Config:
     def __init__(self, config_parser):
