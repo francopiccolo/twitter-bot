@@ -36,7 +36,6 @@ jobs:
     - name: Dump secrets to file
       run: |
         mkdir config
-# echo "hello" > config/config.ini
         echo "${{ secrets.GCP_CREDENTIALS }}" > ./config/google_creds.json
         echo "${{ secrets.CONFIG }}" > ./config/config.ini
 
