@@ -6,7 +6,7 @@ on:
     - main
   
 env:
-  PROJECT_ID: manu-twiter-bot
+  PROJECT_ID: manu-twitter-bot
   GCE_INSTANCE: twitter-bot
   GCE_INSTANCE_ZONE: us-east1-b
 
