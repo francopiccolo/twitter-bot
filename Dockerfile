@@ -2,7 +2,7 @@ FROM python:3.10.2-bullseye
 
 RUN apt-get update && apt-get install -y cron
 
-WORKDIR /bot
+WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
