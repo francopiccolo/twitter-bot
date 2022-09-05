@@ -1,3 +1,5 @@
+# Migrate from Container registry to Artifact registry
+
 name: Deploy Docker to GCE
 
 on:
@@ -38,11 +40,10 @@ jobs:
         mkdir config
         echo "${{ secrets.GCP_CREDENTIALS }}" > config/google_creds.json
         echo "${{ secrets.CONFIG }}" > config/config.ini
-        ls
-        docker build --tag "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA" .
+        docker build --tag "us-east1-docker.pkg.dev/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA" .
 
     - name: Publish
-      run: docker push "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA"
+      run: docker push "us-east1-docker.pkg.dev/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA"
 
     - name: Deploy
       run: |
