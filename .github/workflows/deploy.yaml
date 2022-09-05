@@ -38,6 +38,7 @@ jobs:
         mkdir config
         echo "${{ secrets.GCP_CREDENTIALS }}" > config/google_creds.json
         echo "${{ secrets.CONFIG }}" > config/config.ini
+        ls
         docker build --tag "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA" .
 
     - name: Publish
