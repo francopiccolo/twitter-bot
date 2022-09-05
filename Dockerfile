@@ -5,11 +5,12 @@ RUN apt-get update && apt-get install -y cron
 WORKDIR /app
 
 COPY requirements.txt .
+
 RUN pip install -r requirements.txt
 
 COPY . .
-COPY config config
-RUN crontab crontab
-RUN touch cron.log
+
+RUN crontab crontab \
+    touch cron.log
 
 CMD cron && tail -f cron.log
