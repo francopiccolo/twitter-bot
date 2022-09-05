@@ -6,4 +6,4 @@ if __name__ == '__main__':
         process_accounts()
         send_text_message('Bot succeeded')
     except Exception as e:
-        send_text_message('Bot failed ' + str(e))
+        send_text_message('<!channel> Bot failed ' + str(e))

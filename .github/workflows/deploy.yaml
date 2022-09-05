@@ -35,12 +35,14 @@ jobs:
 
     - run: gcloud --quiet auth configure-docker us-east1-docker.pkg.dev
     
-    - name: Add secrets to files and build
+    - name: Add secrets to files
       run: |
         mkdir config
         echo "${{ secrets.GCP_CREDENTIALS_QUOTES_ESCAPED }}" > config/google_creds.json
         echo "${{ secrets.CONFIG }}" > config/config.ini
-        docker build --tag "us-east1-docker.pkg.dev/$PROJECT_ID/$GCE_INSTANCE/bot:$GITHUB_SHA" .
+
+    - name: Build
+      run: docker build --tag "us-east1-docker.pkg.dev/$PROJECT_ID/$GCE_INSTANCE/bot:$GITHUB_SHA" .
 
     - name: Push
       run: docker push "us-east1-docker.pkg.dev/$PROJECT_ID/$GCE_INSTANCE/bot:$GITHUB_SHA"
