@@ -38,7 +38,7 @@ jobs:
     - name: Add secrets to files and build
       run: |
         mkdir config
-        echo "${{ secrets.GCP_CREDENTIALS }}" > config/google_creds.json
+        echo "${{ secrets.GCP_CREDENTIALS_QUOTES_ESCAPED }}" > config/google_creds.json
         echo "${{ secrets.CONFIG }}" > config/config.ini
         docker build --tag "us-east1-docker.pkg.dev/$PROJECT_ID/$GCE_INSTANCE/bot:$GITHUB_SHA" .
 
