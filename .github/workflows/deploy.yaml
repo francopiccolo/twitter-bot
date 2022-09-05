@@ -33,7 +33,7 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v0
 
-    - run: gcloud --quiet auth configure-docker
+    - run: gcloud --quiet auth configure-docker us-east1-docker.pkg.dev
     
     - name: Add secrets to files and build
       run: |
