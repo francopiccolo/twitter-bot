@@ -1,2 +1,1 @@
-CONFIG_FILE = /bot/config/prod.ini
-0 * * * * /usr/local/bin/python /app/main.py >> /app/cron.log 2>&1
+0 * * * * cd /app && python main.py >> cron.log 2>&1
