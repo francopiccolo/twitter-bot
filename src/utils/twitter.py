@@ -22,7 +22,6 @@ def get_api(api_key, api_secret, access_token, access_token_secret):
     except Exception as e:
         logger.error('Error creating API', exc_info=True)
         raise e
-    logger.info('API created')
     return api
 
 def get_users_from_user_ids(api, user_ids, chunk_size=100):

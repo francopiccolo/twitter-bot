@@ -11,7 +11,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN crontab crontab &&\
-    touch cron.log
+RUN crontab crontab
 
-CMD cron && tail -f cron.log
+CMD cron
