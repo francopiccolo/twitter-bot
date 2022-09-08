@@ -13,4 +13,4 @@ COPY . .
 
 RUN crontab crontab
 
-CMD cron
+CMD cron -f
