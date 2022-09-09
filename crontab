@@ -1,1 +1,1 @@
-0 * * * * cd /app && /usr/local/bin/python main.py
+0 * * * * cd /app && /usr/local/bin/python main.py > /dev/stdout
