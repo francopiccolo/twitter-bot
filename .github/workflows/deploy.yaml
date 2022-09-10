@@ -9,7 +9,6 @@ env:
   PROJECT_ID: manu-twitter-bot
   REGION: us-east1
   SERVICE_NAME: twitter-bot
-  IMAGE_NAME: cloud-run
 
 jobs:
   setup-build-publish-deploy:
@@ -49,6 +48,7 @@ jobs:
     - name: Deploy
       uses: google-github-actions/deploy-cloudrun@v0
       with:
-        service: hello-cloud-run
+        service: ${{ env.SERVICE_NAME }}
         image: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}"
         region: ${{ env.REGION }}
+        timeout: 15m
