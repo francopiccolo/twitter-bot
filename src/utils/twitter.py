@@ -1,12 +1,9 @@
 import logging
-import os
 from datetime import datetime, timezone
 
 import numpy as np
 import pandas as pd
 import tweepy
-
-logger = logging.getLogger()
 
 def get_api(api_key, api_secret, access_token, access_token_secret):
     consumer_key = api_key
@@ -20,7 +17,7 @@ def get_api(api_key, api_secret, access_token, access_token_secret):
     try:
         api.verify_credentials()
     except Exception as e:
-        logger.error('Error creating API', exc_info=True)
+        logging.exception('Error creating API')
         raise e
     return api
 
@@ -34,7 +31,13 @@ def get_users_from_user_ids(api, user_ids, chunk_size=100):
         if end_idx > num_users:
             end_idx = num_users
             keep = False
-        users.extend(api.lookup_users(user_id=user_ids[start_idx:end_idx]))
+        cur_users = []
+        try:
+            cur_users = api.lookup_users(user_id=user_ids[start_idx:end_idx])
+        except tweepy.errors.NotFound:
+            logging.exception('All users requested are invalid')
+
+        users.extend(cur_users)
         start_idx += chunk_size
         end_idx += chunk_size
     return users
