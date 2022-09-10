@@ -1,4 +1,6 @@
-name: Deploy Docker to Cloud run
+# Migrate from Container registry to Artifact registry
+
+name: Deploy Docker to GCE
 
 on:
   push:
@@ -7,9 +9,8 @@ on:
   
 env:
   PROJECT_ID: manu-twitter-bot
-  REGION: us-east1
-  SERVICE_NAME: twitter-bot
-  IMAGE_NAME: cloud-run
+  GCE_INSTANCE: twitter-bot
+  GCE_INSTANCE_ZONE: us-east1-b
 
 jobs:
   setup-build-publish-deploy:
@@ -32,7 +33,7 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v0
 
-    - run: gcloud --quiet auth configure-docker $REGION-docker.pkg.dev
+    - run: gcloud --quiet auth configure-docker us-east1-docker.pkg.dev
     
     - name: Add secrets to files
       run: |
@@ -41,14 +42,13 @@ jobs:
         echo "${{ secrets.CONFIG }}" > config/config.ini
 
     - name: Build
-      run: docker build --tag "$REGION-docker.pkg.dev/$PROJECT_ID/$SERVICE_NAME/$SERVICE_NAME:$GITHUB_SHA" .
+      run: docker build --tag "us-east1-docker.pkg.dev/$PROJECT_ID/$GCE_INSTANCE/bot:$GITHUB_SHA" .
 
     - name: Push
-      run: docker push "$REGION-docker.pkg.dev/$PROJECT_ID/$SERVICE_NAME/$SERVICE_NAME:$GITHUB_SHA"
+      run: docker push "us-east1-docker.pkg.dev/$PROJECT_ID/$GCE_INSTANCE/bot:$GITHUB_SHA"
 
-    - name: Deploy
-      uses: google-github-actions/deploy-cloudrun@v0
-      with:
-        service: hello-cloud-run
-        image: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}"
-        region: ${{ env.REGION }}
+    - name: Update GCE
+      run: |
+        gcloud compute instances update-container "$GCE_INSTANCE" \
+          --zone "$GCE_INSTANCE_ZONE" \
+          --container-image "us-east1-docker.pkg.dev/$PROJECT_ID/$GCE_INSTANCE/bot:$GITHUB_SHA"
